@@ -84,7 +84,7 @@ public class PlayFabLogin : MonoBehaviour
     private void OnDisplayNameSuccess(UpdateUserTitleDisplayNameResult result)
     {
         Debug.Log("You have updated the display name of playfab account!");
-        SceneController.LoadScene("MultiplayerTest");
+        SceneController.LoadScene("PhotonScene");
     }
 
     #endregion
