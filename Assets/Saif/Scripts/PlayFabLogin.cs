@@ -1,15 +1,33 @@
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using TMPro;
 using System;
 
 public class PlayFabLogin : MonoBehaviour
 {
     [SerializeField] private string username;
+    [SerializeField] private TMP_InputField userNameField;
 
     #region Unity Methods
+
+    private void Awake()
+    {
+        username = PlayerPrefs.GetString("USERNAME");
+        if (string.IsNullOrEmpty(username))
+        {
+            userNameField.text = "Player " + UnityEngine.Random.Range(1000, 10000);
+        }
+        else 
+        {
+            userNameField.text = username;
+        }
+        
+    }
+
     void Start()
     {
+
         if (string.IsNullOrEmpty(PlayFabSettings.TitleId))
         {
             PlayFabSettings.TitleId = "75584";
@@ -84,7 +102,8 @@ public class PlayFabLogin : MonoBehaviour
     private void OnDisplayNameSuccess(UpdateUserTitleDisplayNameResult result)
     {
         Debug.Log("You have updated the display name of playfab account!");
-        SceneController.LoadScene("PhotonScene");
+        //SceneController.LoadScene("PhotonScene");
+
     }
 
     #endregion
