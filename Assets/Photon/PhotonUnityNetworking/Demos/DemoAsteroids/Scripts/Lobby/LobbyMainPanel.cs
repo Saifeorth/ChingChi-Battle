@@ -70,6 +70,7 @@ namespace Photon.Pun.Demo.Asteroids
             UpdateRoomListView();
         }
 
+
         public override void OnJoinedLobby()
         {
             // whenever this joins a new lobby, clear any previous room lists
@@ -83,6 +84,8 @@ namespace Photon.Pun.Demo.Asteroids
             cachedRoomList.Clear();
             ClearRoomListView();
         }
+
+
 
         public override void OnCreateRoomFailed(short returnCode, string message)
         {

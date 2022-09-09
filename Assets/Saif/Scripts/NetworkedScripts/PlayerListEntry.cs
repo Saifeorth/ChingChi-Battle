@@ -5,11 +5,12 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerListEntry : MonoBehaviour
 {
     [Header("UI References")]
-    public Text PlayerNameText;
+    public TextMeshProUGUI PlayerNameText;
 
     public Image PlayerColorImage;
     public Button PlayerReadyButton;
@@ -81,7 +82,7 @@ public class PlayerListEntry : MonoBehaviour
 
     public void SetPlayerReady(bool playerReady)
     {
-        PlayerReadyButton.GetComponentInChildren<Text>().text = playerReady ? "Ready!" : "Ready?";
+        PlayerReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = playerReady ? "Ready!" : "Ready?";
         PlayerReadyImage.enabled = playerReady;
     }
 }

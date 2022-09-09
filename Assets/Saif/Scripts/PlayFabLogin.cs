@@ -9,6 +9,10 @@ public class PlayFabLogin : MonoBehaviour
     [SerializeField] private string username;
     [SerializeField] private TMP_InputField userNameField;
 
+
+
+    public static Action<string> OnPlayfabLoginSuccess;
+
     #region Unity Methods
 
     private void Awake()
@@ -61,9 +65,12 @@ public class PlayFabLogin : MonoBehaviour
         Debug.Log($"Updating Playfab account's display name to {displayName}");
         var request = new UpdateUserTitleDisplayNameRequest { DisplayName = displayName };
         PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameSuccess, OnFailure);
+        OnPlayfabLoginSuccess?.Invoke(displayName);
     }
 
-   
+  
+
+
 
 
     #endregion
@@ -97,6 +104,7 @@ public class PlayFabLogin : MonoBehaviour
         Debug.Log($"You have logged into Playfab using custom id {username}");
         UpdateDisplayName(username);
 
+
     }
 
     private void OnDisplayNameSuccess(UpdateUserTitleDisplayNameResult result)
@@ -105,6 +113,9 @@ public class PlayFabLogin : MonoBehaviour
         //SceneController.LoadScene("PhotonScene");
 
     }
+
+
+   
 
     #endregion
 

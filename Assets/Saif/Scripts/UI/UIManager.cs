@@ -183,6 +183,13 @@ public class UIManager : SimplePanel
 
 
 
+    public void OnClickMultiplayer()
+    {
+        CloseAndOpenPanel(MainMenuPanel, LoginPanel);
+    }
+
+
+
 
 
 

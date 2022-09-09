@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 using ExitGames.Client.Photon;
+
 
 public class PhotonMatchmaking : MonoBehaviourPunCallbacks
 {
+
+
+    public TMP_InputField RoomNameInputField;
+    public TMP_InputField MaxPlayersInputField;
+
     public GameObject RoomListContent;
     public GameObject RoomListEntryPrefab;
 
@@ -17,6 +24,70 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
     private Dictionary<int, GameObject> playerListEntries;
 
 
+
+    #region Public Functions
+
+
+    public void OnClickCreateRoomButton()
+    {
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.SelectionPanel, UIManager.instance.CreateRoomPanel);
+    }
+
+    public void OnJoinRandomRoomButtonClicked()
+    {
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.SelectionPanel, UIManager.instance.JoinRandomRoomPanel);
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+
+    public void OnRoomListButtonClicked()
+    {
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.SelectionPanel, UIManager.instance.RoomlistPanel);
+    }
+
+    public void OnBackButtonClicked()
+    {
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.CreateRoomPanel, UIManager.instance.SelectionPanel);
+    }
+
+
+    public void LocalPlayerPropertiesUpdated()
+    {
+        UIManager.instance.startMultiplayerGameButton.SetActive(CheckPlayersReady());
+    }
+
+
+    #endregion
+
+
+
+    #region Unity Functins
+
+
+    private void Awake()
+    {
+        PlayFabLogin.OnPlayfabLoginSuccess += ConnectToPhoton;
+        PhotonNetwork.AutomaticallySyncScene = true;
+        cachedRoomList = new Dictionary<string, RoomInfo>();
+        roomListEntries = new Dictionary<string, GameObject>();
+    }
+
+
+    private void OnDestroy()
+    {
+        PlayFabLogin.OnPlayfabLoginSuccess -= ConnectToPhoton;
+    }
+
+
+    #endregion
 
     #region PhotonCallbacks
 
@@ -39,6 +110,14 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         cachedRoomList.Clear();
         ClearRoomListView();
     }
+
+    public override void OnLeftLobby()
+    {
+        cachedRoomList.Clear();
+        ClearRoomListView();
+    }
+
+
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -65,7 +144,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
         cachedRoomList.Clear();
 
-        UIManager.instance.CloseAndOpenPanel(UIManager.instance.JoinRandomRoomPanel, UIManager.instance.InsideRoomPanel);
+        UIManager.instance.CloseAndOpenPanel(null, UIManager.instance.InsideRoomPanel);
         //SetActivePanel(InsideRoomPanel.name);
 
         if (playerListEntries == null)
@@ -188,10 +267,39 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
     }
 
 
-    public void LocalPlayerPropertiesUpdated()
+
+    public void OnCreateRoomButtonClicked()
     {
-        UIManager.instance.startMultiplayerGameButton.SetActive(CheckPlayersReady());
+        string roomName = RoomNameInputField.text;
+        roomName = (roomName.Equals(string.Empty)) ? "Room " + Random.Range(1000, 10000) : roomName;
+
+        byte maxPlayers;
+        byte.TryParse(MaxPlayersInputField.text, out maxPlayers);
+        maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
+
+        RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
+
+        PhotonNetwork.CreateRoom(roomName, options, null);
     }
+
+
+
+    private void ConnectToPhoton(string playerName)
+    {
+        //string playerName = PlayerNameInput.text;
+
+        if (!playerName.Equals(""))
+        {
+            PhotonNetwork.LocalPlayer.NickName = playerName;
+            PhotonNetwork.ConnectUsingSettings();
+        }
+        else
+        {
+            Debug.LogError("Player Name is invalid.");
+        }
+    }
+
+
     #endregion
 
 
