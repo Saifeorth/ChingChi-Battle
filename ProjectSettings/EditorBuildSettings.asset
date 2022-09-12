@@ -6,18 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Saif/Scenes/Login.unity
-    guid: 8fef3ceb76190864da11d68f03d34f47
-  - enabled: 1
     path: Assets/Saif/Scenes/PhotonScene.unity
     guid: 5c85fcc9136d612419eccac3004ee46c
-  - enabled: 1
-    path: Assets/GameAssets/Scenes/MultiplayerTest.unity
-    guid: db3b4710ce733a346a079b61b0de3ed3
-  - enabled: 1
-    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scenes/DemoAsteroids-LobbyScene.unity
-    guid: c8a9d1312a49dc8488a9b32d83d659c7
-  - enabled: 1
-    path: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scenes/DemoAsteroids-GameScene.unity
-    guid: 98efc37d6307844488eb3e4247dde7e9
   m_configObjects: {}

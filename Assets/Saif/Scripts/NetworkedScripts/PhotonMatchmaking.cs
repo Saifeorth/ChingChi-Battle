@@ -49,6 +49,11 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         UIManager.instance.CloseAndOpenPanel(UIManager.instance.SelectionPanel, UIManager.instance.RoomlistPanel);
     }
 
+    public void OnLeaveGameButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
     public void OnBackButtonClicked()
     {
         if (PhotonNetwork.InLobby)
@@ -56,6 +61,24 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
             PhotonNetwork.LeaveLobby();
         }
         UIManager.instance.CloseAndOpenPanel(UIManager.instance.CreateRoomPanel, UIManager.instance.SelectionPanel);
+    }
+
+
+    public void OnStartGameButtonClicked()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+
+        //PhotonNetwork.LoadLevel("DemoAsteroids-GameScene");
+    }
+
+    public void OnBackFromRoomListPanel()
+    {
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.RoomlistPanel, UIManager.instance.SelectionPanel);
     }
 
 
@@ -117,6 +140,14 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         ClearRoomListView();
     }
 
+    //public override void OnCreatedRoom()
+    //{
+    //    UIManager.instance.CloseAndOpenPanel(UIManager.instance.CreateRoomPanel, null);
+    //}
+
+
+
+
 
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -127,16 +158,20 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        UIManager.instance.CloseAndOpenPanel(UIManager.instance.JoinRandomRoomPanel, UIManager.instance.SelectionPanel);
+        //UIManager.instance.CloseAndOpenPanel(UIManager.instance.JoinRandomRoomPanel, null);
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.RoomlistPanel, UIManager.instance.SelectionPanel);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        
+
         string roomName = "Room " + Random.Range(1000, 10000);
 
         RoomOptions options = new RoomOptions { MaxPlayers = 8 };
 
         PhotonNetwork.CreateRoom(roomName, options, null);
+        //UIManager.instance.CloseAndOpenPanel(UIManager.instance.JoinRandomRoomPanel, UIManager.instance.SelectionPanel);
     }
 
     public override void OnJoinedRoom()
@@ -144,7 +179,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
         cachedRoomList.Clear();
 
-        UIManager.instance.CloseAndOpenPanel(null, UIManager.instance.InsideRoomPanel);
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.JoinRandomRoomPanel, UIManager.instance.InsideRoomPanel);
         //SetActivePanel(InsideRoomPanel.name);
 
         if (playerListEntries == null)
@@ -178,8 +213,65 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
     }
 
 
+     public override void OnLeftRoom()
+        {
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.InsideRoomPanel, UIManager.instance.SelectionPanel);
 
+            foreach (GameObject entry in playerListEntries.Values)
+            {
+                Destroy(entry.gameObject);
+            }
 
+            playerListEntries.Clear();
+            playerListEntries = null;
+        }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        GameObject entry = Instantiate(PlayerListEntryPrefab);
+        entry.transform.SetParent(UIManager.instance.InsideRoomPanel.transform);
+        entry.transform.localScale = Vector3.one;
+        entry.GetComponent<PlayerListEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
+
+        playerListEntries.Add(newPlayer.ActorNumber, entry);
+        UIManager.instance.startMultiplayerGameButton.SetActive(CheckPlayersReady());
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
+        playerListEntries.Remove(otherPlayer.ActorNumber);
+
+        UIManager.instance.startMultiplayerGameButton.SetActive(CheckPlayersReady());
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
+        {
+            UIManager.instance.startMultiplayerGameButton.SetActive(CheckPlayersReady());
+        }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (playerListEntries == null)
+        {
+            playerListEntries = new Dictionary<int, GameObject>();
+        }
+
+        GameObject entry;
+        if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
+        {
+            object isPlayerReady;
+            if (changedProps.TryGetValue(ChingchiGame.PLAYER_READY, out isPlayerReady))
+            {
+                entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool)isPlayerReady);
+            }
+        }
+
+        UIManager.instance.startMultiplayerGameButton.SetActive(CheckPlayersReady());
+    }
 
 
 
@@ -280,6 +372,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
 
         PhotonNetwork.CreateRoom(roomName, options, null);
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.CreateRoomPanel, null);
     }
 
 
