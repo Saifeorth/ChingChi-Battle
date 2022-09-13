@@ -16,6 +16,7 @@ namespace Gameplay
 
         private Rigidbody rigidbody;
 
+        [SerializeField] private Transform centerOfMass;
         [SerializeField] private WheelCollider frontLeftWheelCollider;
         [SerializeField] private WheelCollider frontRightWheelCollider;
         [SerializeField] private WheelCollider backLeftWheelCollider;
@@ -42,6 +43,7 @@ namespace Gameplay
         {
             playerControls = new PlayerControls();
             rigidbody = GetComponent<Rigidbody>();
+            rigidbody.centerOfMass = centerOfMass.transform.position;
         }
 
         private void OnEnable()
