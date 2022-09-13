@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Saif/Scenes/PhotonScene.unity.meta
+guid: 51b89fccaa0e1714aa223c47b6ac3994
+========
 guid: 117c21a03a6d21844836cba9180c162c
+>>>>>>>> main:Assets/GameAssets/Scenes/PlayerController.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

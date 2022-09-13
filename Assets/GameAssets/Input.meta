@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Saif/Scenes.meta
+guid: 4f7f4d4b8c48ea64fabd527adce0cf3d
+========
 guid: c3830e95458949043b2112d90d1b1f9d
+>>>>>>>> main:Assets/GameAssets/Input.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
