@@ -12,11 +12,10 @@ namespace Gameplay
         public Transform bulletOrigin;
         public float rateOfFire;
         public GameObject bullet;
+        public List<GameObject> pooledObjects;
         [SerializeField] private int amountToPool;
 
-        public List<GameObject> pooledObjects;
         private PlayerControls playerControls;
-
         private bool canFire = true;
 
         private void Awake()
@@ -36,14 +35,14 @@ namespace Gameplay
 
         private void Start()
         {
-            pooledObjects = new List<GameObject>();
-            GameObject tmp;
-            for (int i = 0; i < amountToPool; i++)
-            {
-                tmp = Instantiate(bullet);
-                tmp.SetActive(false);
-                pooledObjects.Add(tmp);
-            }
+            //pooledObjects = new List<GameObject>();
+            //GameObject tmp;
+            //for (int i = 0; i < amountToPool; i++)
+            //{
+            //    tmp = Instantiate(bullet);
+            //    tmp.SetActive(false);
+            //    pooledObjects.Add(tmp);
+            //}
 
         }
 
@@ -57,31 +56,18 @@ namespace Gameplay
 
         private void FireBullet()
         {
-            for (int i = 0; i < amountToPool; i++)
-            {
-                if (pooledObjects[i].activeInHierarchy)
-                {
-                    if (i >= 3)
-                    {
-                        pooledObjects[i - 3].SetActive(false);
-                    }
-                }
-            }
 
             if (playerControls.ShootingControls.Fire.IsPressed())
             {
                 Debug.Log("Firing bullet");
-                GameObject cloneBullet = GetPooledObject();
+                GameObject cloneBullet = Instantiate(bullet);
                 if (cloneBullet != null)
                 {
-                    cloneBullet.transform.position = bulletOrigin.transform.position;
-                    cloneBullet.transform.rotation = bulletOrigin.transform.rotation;
-                    cloneBullet.SetActive(true);
-                    cloneBullet.GetComponent<Rigidbody>().AddForce(bulletForce * transform.forward, ForceMode.Impulse);
-                    
+                    cloneBullet.transform.position = transform.position;
+                    cloneBullet.transform.rotation = transform.rotation;
+                    Destroy(cloneBullet, 2f);
                 }
             }
-
         }
 
         public IEnumerator IE_DelayedShot(float sec)
@@ -104,8 +90,6 @@ namespace Gameplay
 
             return null;
         }
-
-
     }
 }
 

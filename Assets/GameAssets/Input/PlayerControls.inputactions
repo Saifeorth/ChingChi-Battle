@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "CarBrake",
+                    "type": "Button",
+                    "id": "a19ca60a-b521-40f4-b2b4-86fd60aefa55",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -70,6 +79,17 @@
                     "action": "CarMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ac22d7e9-4c50-459b-8159-75e3753f87db",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CarBrake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
