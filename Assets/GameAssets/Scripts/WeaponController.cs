@@ -10,11 +10,14 @@ namespace Gameplay
     {
         public float bulletForce;
         public Transform bulletOrigin;
+        public float rateOfFire;
         public GameObject bullet;
         [SerializeField] private int amountToPool;
 
         public List<GameObject> pooledObjects;
         private PlayerControls playerControls;
+
+        private bool canFire = true;
 
         private void Awake()
         {
@@ -42,12 +45,30 @@ namespace Gameplay
                 pooledObjects.Add(tmp);
             }
 
-            playerControls.ShootingControls.Fire.performed += FireBullet;
         }
 
-        private void FireBullet(InputAction.CallbackContext context)
-        {            
-            if(context.control.IsPressed())
+        private void Update()
+        {
+            if(canFire)
+            {
+                StartCoroutine(IE_DelayedShot(rateOfFire));
+            }
+        }
+
+        private void FireBullet()
+        {
+            for (int i = 0; i < amountToPool; i++)
+            {
+                if (pooledObjects[i].activeInHierarchy)
+                {
+                    if (i >= 3)
+                    {
+                        pooledObjects[i - 3].SetActive(false);
+                    }
+                }
+            }
+
+            if (playerControls.ShootingControls.Fire.IsPressed())
             {
                 Debug.Log("Firing bullet");
                 GameObject cloneBullet = GetPooledObject();
@@ -55,10 +76,20 @@ namespace Gameplay
                 {
                     cloneBullet.transform.position = bulletOrigin.transform.position;
                     cloneBullet.transform.rotation = bulletOrigin.transform.rotation;
-                    cloneBullet.GetComponent<Rigidbody>().AddForce(bulletForce * Vector3.forward, ForceMode.Impulse);
                     cloneBullet.SetActive(true);
+                    cloneBullet.GetComponent<Rigidbody>().AddForce(bulletForce * transform.forward, ForceMode.Impulse);
+                    
                 }
-            }   
+            }
+
+        }
+
+        public IEnumerator IE_DelayedShot(float sec)
+        {
+            canFire = false;
+            FireBullet();
+            yield return new WaitForSeconds(sec);
+            canFire = true;
         }
 
         public GameObject GetPooledObject()
