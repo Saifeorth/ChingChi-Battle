@@ -178,7 +178,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
     {
         // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
         cachedRoomList.Clear();
-
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.RoomlistPanel, null);
         UIManager.instance.CloseAndOpenPanel(UIManager.instance.JoinRandomRoomPanel, UIManager.instance.InsideRoomPanel);
         //SetActivePanel(InsideRoomPanel.name);
 
