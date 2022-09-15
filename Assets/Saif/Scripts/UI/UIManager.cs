@@ -83,7 +83,7 @@ public class UIManager : SimplePanel
     // Start is called before the first frame update
     void Start()
     {
-        CloseAndOpenPanel(null, FadeInScreen);
+        CloseAndOpenPanel(null, MainMenuPanel);
     }
 
     //public void OnGameWin()
