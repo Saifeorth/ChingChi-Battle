@@ -54,6 +54,9 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+
+    
+
     public void OnBackButtonClicked()
     {
         if (PhotonNetwork.InLobby)
@@ -116,6 +119,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        //print("Called");
         UIManager.instance.CloseAndOpenPanel(UIManager.instance.LoginPanel, UIManager.instance.SelectionPanel);
     }
 
