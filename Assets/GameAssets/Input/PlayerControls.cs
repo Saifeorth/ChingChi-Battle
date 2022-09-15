@@ -35,6 +35,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CarBrake"",
+                    ""type"": ""Button"",
+                    ""id"": ""a19ca60a-b521-40f4-b2b4-86fd60aefa55"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""CarMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac22d7e9-4c50-459b-8159-75e3753f87db"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CarBrake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -129,6 +149,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // CarControls
         m_CarControls = asset.FindActionMap("CarControls", throwIfNotFound: true);
         m_CarControls_CarMovement = m_CarControls.FindAction("CarMovement", throwIfNotFound: true);
+        m_CarControls_CarBrake = m_CarControls.FindAction("CarBrake", throwIfNotFound: true);
         // ShootingControls
         m_ShootingControls = asset.FindActionMap("ShootingControls", throwIfNotFound: true);
         m_ShootingControls_Fire = m_ShootingControls.FindAction("Fire", throwIfNotFound: true);
@@ -192,11 +213,13 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_CarControls;
     private ICarControlsActions m_CarControlsActionsCallbackInterface;
     private readonly InputAction m_CarControls_CarMovement;
+    private readonly InputAction m_CarControls_CarBrake;
     public struct CarControlsActions
     {
         private @PlayerControls m_Wrapper;
         public CarControlsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @CarMovement => m_Wrapper.m_CarControls_CarMovement;
+        public InputAction @CarBrake => m_Wrapper.m_CarControls_CarBrake;
         public InputActionMap Get() { return m_Wrapper.m_CarControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -209,6 +232,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @CarMovement.started -= m_Wrapper.m_CarControlsActionsCallbackInterface.OnCarMovement;
                 @CarMovement.performed -= m_Wrapper.m_CarControlsActionsCallbackInterface.OnCarMovement;
                 @CarMovement.canceled -= m_Wrapper.m_CarControlsActionsCallbackInterface.OnCarMovement;
+                @CarBrake.started -= m_Wrapper.m_CarControlsActionsCallbackInterface.OnCarBrake;
+                @CarBrake.performed -= m_Wrapper.m_CarControlsActionsCallbackInterface.OnCarBrake;
+                @CarBrake.canceled -= m_Wrapper.m_CarControlsActionsCallbackInterface.OnCarBrake;
             }
             m_Wrapper.m_CarControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -216,6 +242,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @CarMovement.started += instance.OnCarMovement;
                 @CarMovement.performed += instance.OnCarMovement;
                 @CarMovement.canceled += instance.OnCarMovement;
+                @CarBrake.started += instance.OnCarBrake;
+                @CarBrake.performed += instance.OnCarBrake;
+                @CarBrake.canceled += instance.OnCarBrake;
             }
         }
     }
@@ -256,6 +285,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface ICarControlsActions
     {
         void OnCarMovement(InputAction.CallbackContext context);
+        void OnCarBrake(InputAction.CallbackContext context);
     }
     public interface IShootingControlsActions
     {
