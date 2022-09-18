@@ -18,6 +18,7 @@ public class UIManager : SimplePanel
     public GameObject JoinRandomRoomPanel;
     public GameObject RoomlistPanel;
     public GameObject InsideRoomPanel;
+    public GameObject LeaderboardPanel;
 
 
     public TextMeshProUGUI levelText;
