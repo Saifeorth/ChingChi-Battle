@@ -41,11 +41,15 @@ public class ChingchiMachineGun : MonoBehaviour
     [Header("Firing")]
 
     [SerializeField]
-    private float fireRate = 2;
+    private float fireRate = 1f;
+
+    [SerializeField]
+    private float nextFire = 0f;
+
     [SerializeField]
     private Transform bulletSpawnPoint;
     [SerializeField]
-    private GameObject bullet;
+    private ChingchiBullet bulletPrefab;
 
 
 
@@ -76,25 +80,6 @@ public class ChingchiMachineGun : MonoBehaviour
                     }
                 }
             }
-
-
-
-
-            //RaycastHit hit;
-
-            //if (Physics.SphereCast(turretTransform.position, detectionRange, turretTransform.position, out hit, enemyLayer))
-            //{
-            //    ChingchiMachineGun gun = hit.collider.GetComponentInChildren<ChingchiMachineGun>();
-
-            //    if (gun != null && gun != this)
-            //    {
-            //        if (!targetEnemies.Contains(gun.transform))
-            //        {
-            //            targetEnemies.Add(gun.transform);
-            //            Debug.Log("Found Enemy");
-            //        }
-            //    }
-            //}
             timeSinceEnemiesSearched = 0.0f;
         }
         timeSinceEnemiesSearched += Time.deltaTime;
@@ -167,15 +152,41 @@ public class ChingchiMachineGun : MonoBehaviour
     {
         Search();
         LookAtTarget();
+        AutoFire();
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Fire();
+        //}
 
+    }
+
+
+    private void AutoFire()
+    {
+        if (currentTarget != null && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;         
+            Vector3 shootDir = (currentTarget.position - bulletTransform.position).normalized;
+            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir);
+        }
     }
 
 
     private void Fire()
     {
-       
+        Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;
+        if (currentTarget != null)
+        {       
+            Vector3 shootDir = (currentTarget.position - bulletTransform.position).normalized;
+            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir);
+        }
+        else 
+        {
+            Vector3 shootDir = (bulletSpawnPoint.forward).normalized;
+            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir);
+        }
     }
-
 
 
     private void LookAtTarget()
@@ -204,43 +215,14 @@ public class ChingchiMachineGun : MonoBehaviour
     }
 
 
-
-    //Add Targets On Detection
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.layer == enemyLayer)
-    //    {
-
-    //        ChingchiMachineGun gun = other.gameObject.GetComponentInChildren<ChingchiMachineGun>();
-
-    //        if (gun!=null && gun !=this)
-    //        {
-    //            targets.Add(gun.transform);
-    //            Debug.Log("Found Enemy");
-    //        }
-    //    }
-    //}
-
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.layer == enemyLayer)
-    //    {
-    //        ChingchiMachineGun gun = other.gameObject.GetComponentInChildren<ChingchiMachineGun>();
-    //        if (gun != null && gun != this)
-    //        {
-    //            targets.Remove(gun.transform);
-    //            Debug.Log("Lost Enemy");
-    //        }
-    //    }
-    //}
-
     void OnDrawGizmosSelected()
     {
         // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(turretTransform.position, detectionRange);
     }
+
+
 
 
 
