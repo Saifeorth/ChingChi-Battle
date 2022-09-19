@@ -76,7 +76,7 @@ public class ChingchiMachineGun : MonoBehaviour
                     if (!targetEnemies.Contains(gun.transform))
                     {
                         targetEnemies.Add(gun.transform);
-                        Debug.Log("Found Enemy");
+                        //Debug.Log("Found Enemy");
                     }
                 }
             }
@@ -106,7 +106,7 @@ public class ChingchiMachineGun : MonoBehaviour
                 if (dist > detectionRange)
                 {
                     farEnemies.Add(t);
-                    Debug.Log("Enemy Removed From List");
+                    //Debug.Log("Enemy Removed From List");
                 }
             }
 

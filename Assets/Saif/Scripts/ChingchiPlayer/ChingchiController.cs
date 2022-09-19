@@ -19,7 +19,8 @@ public class ChingchiController : MonoBehaviour
 
 
 
-    private Vector3 chingchiVelocity;
+    //private Vector3 chingchiVelocity;
+
 
 
     private void Start()
@@ -30,13 +31,9 @@ public class ChingchiController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //chingchiVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        //rb.velocity = dir * speed;
-        //transform.Translate(dir * speed * Time.deltaTime);
-
-
         GatherInput();
         Look();
+        //CalculateMovementVelocity();
     }
 
 
@@ -51,7 +48,7 @@ public class ChingchiController : MonoBehaviour
 
     void GatherInput()
     {
-        _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        _input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
     }
 
 
@@ -70,5 +67,10 @@ public class ChingchiController : MonoBehaviour
     {
         Vector3 pos = transform.position + (transform.forward * _input.magnitude) * speed * Time.deltaTime;
         rb.MovePosition(pos);
+    }
+
+    void CalculateMovementVelocity()
+    {
+        
     }
 }

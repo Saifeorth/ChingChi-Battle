@@ -12,6 +12,10 @@ public class ChingchiBullet : MonoBehaviour
     [SerializeField]
     private float selfDestroy= 3f;
 
+    [SerializeField]
+    private float Damage = 10f;
+
+
     private void Awake()
     {
         Rb = GetComponent<Rigidbody>();

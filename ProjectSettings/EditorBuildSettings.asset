@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Saif/Scenes/PhotonScene.unity
     guid: 5c85fcc9136d612419eccac3004ee46c
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 60b3ac27f4c64d84eb2fdb65909a27a3,
+      type: 2}

@@ -608,6 +608,20 @@ MonoBehaviour:
       m_Height: 65
     m_Scale: 1
     m_AtlasIndex: 0
+  - m_Index: 174
+    m_Metrics:
+      m_Width: 64.625
+      m_Height: 64.796875
+      m_HorizontalBearingX: 2.875
+      m_HorizontalBearingY: 64.796875
+      m_HorizontalAdvance: 71.734375
+    m_GlyphRect:
+      m_X: 628
+      m_Y: 329
+      m_Width: 66
+      m_Height: 65
+    m_Scale: 1
+    m_AtlasIndex: 0
   - m_Index: 175
     m_Metrics:
       m_Width: 52.921875
@@ -888,20 +902,6 @@ MonoBehaviour:
       m_Height: 65
     m_Scale: 1
     m_AtlasIndex: 0
-  - m_Index: 174
-    m_Metrics:
-      m_Width: 64.625
-      m_Height: 64.796875
-      m_HorizontalBearingX: 2.875
-      m_HorizontalBearingY: 64.796875
-      m_HorizontalAdvance: 71.734375
-    m_GlyphRect:
-      m_X: 628
-      m_Y: 329
-      m_Width: 66
-      m_Height: 65
-    m_Scale: 1
-    m_AtlasIndex: 0
   m_CharacterTable:
   - m_ElementType: 1
     m_Unicode: 32
@@ -910,6 +910,10 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 33
     m_GlyphIndex: 136
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 35
+    m_GlyphIndex: 174
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 46
@@ -1130,10 +1134,6 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 8230
     m_GlyphIndex: 132
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 35
-    m_GlyphIndex: 174
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: -206340473921857776}
@@ -5076,7 +5076,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Orbitron Black Atlas Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - UNDERLAY_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -5153,8 +5154,8 @@ Material:
     - _TextureHeight: 1024
     - _TextureWidth: 1024
     - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
+    - _UnderlayOffsetX: 0.407
+    - _UnderlayOffsetY: -0.205
     - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
