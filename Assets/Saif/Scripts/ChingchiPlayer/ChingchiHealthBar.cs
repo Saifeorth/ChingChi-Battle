@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 using System;
 
 public class ChingchiHealthBar : MonoBehaviour
@@ -19,9 +20,21 @@ public class ChingchiHealthBar : MonoBehaviour
     [SerializeField]
     private ChingchiHealth playerHealth;
 
+
+
+
+
+    [SerializeField]
+    private GameObject explosionPrefab;
+
+
+    [SerializeField]
+    private TextMeshProUGUI playerNameText;
+
     private void Awake()
     {
         playerHealth = GetComponentInParent<ChingchiHealth>();
+        playerNameText.text = GetComponentInParent<ChingChiCharacter>().GetName();       
         playerHealth.OnHealthPctChanged += HandleHealthChanged;
     }
 

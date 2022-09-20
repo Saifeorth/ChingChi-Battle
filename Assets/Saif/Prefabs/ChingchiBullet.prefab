@@ -162,7 +162,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 25
+  damageForce: 1
   selfDestroy: 3
+  Damage: -10
+  owner: {fileID: 0}
+  hitImpactPrefab: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
 --- !u!1 &8848371929104393466
 GameObject:
   m_ObjectHideFlags: 0

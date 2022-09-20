@@ -21,6 +21,10 @@ public class ChingchiHealth : MonoBehaviour
     public event Action<float> OnHealthPctChanged;
 
 
+    [SerializeField]
+    private GameObject explosionPrefab;
+
+
     private void Awake()
     {       
         myDamageHandler = GetComponent<ChingchiDamage>();
@@ -41,9 +45,29 @@ public class ChingchiHealth : MonoBehaviour
 
     public void ModifyHealth(float amount)
     {
-        Debug.Log("Health Modifid");
+        //Debug.Log("Health Modifid");
         currentHealth += amount;
         float currentHealthPct = currentHealth / maxHealth;
         OnHealthPctChanged?.Invoke(currentHealthPct);
+        CheckDeath();
+    }
+
+
+    private void CheckDeath()
+    {
+        if(currentHealth>0)
+        {
+            return;
+        }
+        else
+        {
+            OnDeath();
+        }
+    }
+
+    public void OnDeath()
+    {
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using EZCameraShake;
 
 public class ChingchiDamage : MonoBehaviour
 {
@@ -14,13 +15,24 @@ public class ChingchiDamage : MonoBehaviour
     private float flashTime = 0.2f;
 
 
+
+
+    public ChingChiCharacter Owner;
+
     public event Action<float> OnDamageTaken;
 
     private IEnumerator defaultIenumerator;
 
+
+
+
+
+   
+
     // Start is called before the first frame update
     void Awake()
     {
+        Owner = GetComponent<ChingChiCharacter>();
         MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
         allChildMeshes = new List<MeshRenderer>();
         originalColors = new List<Color>();
@@ -38,10 +50,13 @@ public class ChingchiDamage : MonoBehaviour
 
    
 
-    private void ApplyDamage(float Damage)
+    public void ApplyDamage(float Damage)
     {
         OnDamageTaken?.Invoke(Damage);
-
+        if(Owner.IsPlayable())
+        {
+            CameraShaker.Instance.ShakeOnce(3f, 3f, 0.25f, 0.25f);
+        }
         if (defaultIenumerator != null)
         {
             StopCoroutine(defaultIenumerator);
@@ -54,7 +69,6 @@ public class ChingchiDamage : MonoBehaviour
 
     private IEnumerator FlashDamage()
     {
-
         List<Color> preChangecolors = new List<Color>();
 
         foreach (var mesh in allChildMeshes)
@@ -98,6 +112,9 @@ public class ChingchiDamage : MonoBehaviour
             ApplyDamage(-10);
         }
     }
+
+
+
 
 
 

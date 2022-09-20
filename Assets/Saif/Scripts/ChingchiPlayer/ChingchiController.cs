@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChingchiController : MonoBehaviour
+public class ChingchiController : ChingChiCharacter
 {
     [SerializeField]
     private float speed = 10;

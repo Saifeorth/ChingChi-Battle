@@ -20,6 +20,10 @@ public class ChingchiMachineGun : MonoBehaviour
     [SerializeField]
     private float turretRotationSpeed = 0.1f;
 
+    [SerializeField]
+    private ChingChiCharacter myOwner;
+
+
 
 
     [Header("Sort")]
@@ -60,6 +64,7 @@ public class ChingchiMachineGun : MonoBehaviour
     {
         targetEnemies = new List<Transform>();
         gunInitialRotation = turretTransform.localRotation;
+        myOwner = GetComponentInParent<ChingChiCharacter>();
     }
 
 
@@ -102,12 +107,16 @@ public class ChingchiMachineGun : MonoBehaviour
             //Find Far Targets
             foreach (Transform t in targets)
             {
-                float dist = Vector3.Distance(t.position, currentPos);
-                if (dist > detectionRange)
+                if (t != null)
                 {
-                    farEnemies.Add(t);
-                    //Debug.Log("Enemy Removed From List");
+                    float dist = Vector3.Distance(t.position, currentPos);
+                    if (dist > detectionRange)
+                    {
+                        farEnemies.Add(t);
+                        //Debug.Log("Enemy Removed From List");
+                    }
                 }
+               
             }
 
 
@@ -120,13 +129,15 @@ public class ChingchiMachineGun : MonoBehaviour
             {
                 foreach (Transform t in allEnemies)
                 {
-
-                    float dist = Vector3.Distance(t.position, currentPos);
-                    if (dist < minDist)
+                    if (t != null)
                     {
-                        tMin = t;
-                        minDist = dist;
-                    }
+                        float dist = Vector3.Distance(t.position, currentPos);
+                        if (dist < minDist)
+                        {
+                            tMin = t;
+                            minDist = dist;
+                        }
+                    }      
                 }
             }          
         }
@@ -153,10 +164,7 @@ public class ChingchiMachineGun : MonoBehaviour
         Search();
         LookAtTarget();
         AutoFire();
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Fire();
-        //}
+   
 
     }
 
@@ -168,25 +176,12 @@ public class ChingchiMachineGun : MonoBehaviour
             nextFire = Time.time + fireRate;
             Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;         
             Vector3 shootDir = (currentTarget.position - bulletTransform.position).normalized;
-            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir);
+            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir, myOwner);
         }
     }
 
 
-    private void Fire()
-    {
-        Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;
-        if (currentTarget != null)
-        {       
-            Vector3 shootDir = (currentTarget.position - bulletTransform.position).normalized;
-            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir);
-        }
-        else 
-        {
-            Vector3 shootDir = (bulletSpawnPoint.forward).normalized;
-            bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir);
-        }
-    }
+  
 
 
     private void LookAtTarget()
