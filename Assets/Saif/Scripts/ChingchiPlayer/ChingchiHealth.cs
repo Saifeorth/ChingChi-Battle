@@ -67,7 +67,9 @@ public class ChingchiHealth : MonoBehaviour
 
     public void OnDeath()
     {
-        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        GameObject explosion =  Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(explosion, 3f);
         Destroy(this.gameObject);
+
     }
 }
