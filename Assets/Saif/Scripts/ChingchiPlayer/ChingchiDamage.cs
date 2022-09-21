@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using EZCameraShake;
 
+
 public class ChingchiDamage : MonoBehaviour
 {
     [SerializeField]
@@ -14,7 +15,8 @@ public class ChingchiDamage : MonoBehaviour
     [SerializeField]
     private float flashTime = 0.2f;
 
-
+    [SerializeField]
+    private float pushingForce = 10f;
 
 
     public ChingChiCharacter Owner;
@@ -27,7 +29,7 @@ public class ChingchiDamage : MonoBehaviour
 
 
 
-   
+
 
     // Start is called before the first frame update
     void Awake()
@@ -48,12 +50,12 @@ public class ChingchiDamage : MonoBehaviour
     }
 
 
-   
+
 
     public void ApplyDamage(float Damage)
     {
         OnDamageTaken?.Invoke(Damage);
-        if(Owner.IsPlayable())
+        if (Owner.IsPlayable())
         {
             CameraShaker.Instance.ShakeOnce(3f, 3f, 0.25f, 0.25f);
         }
@@ -77,7 +79,7 @@ public class ChingchiDamage : MonoBehaviour
             preChangecolors.Add(mesh.material.color);
         }
 
-       
+
 
         float elapsed = 0.0f;
 
@@ -115,13 +117,14 @@ public class ChingchiDamage : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
-
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    Rigidbody rb = GetComponent<Rigidbody>();
+    //    Vector3 direction = new Vector3(Mathf.Cos(Mathf.Deg2Rad*(90 - transform.eulerAngles.z)),
+    //        Mathf.Sin(Mathf.Deg2Rad *(90 - transform.eulerAngles.z)),
+    //        Mathf.Sin(Mathf.Deg2Rad *(90 - transform.eulerAngles.y))) * -1;
+    //    rb.AddForce(direction * pushingForce, ForceMode.Impulse);
+    //}
 
 }
+

@@ -65,12 +65,8 @@ public class ChingchiController : ChingChiCharacter
 
     void Move()
     {
-        Vector3 pos = transform.position + (transform.forward * _input.magnitude) * speed * Time.deltaTime;
+        Vector3 pos = transform.position + (transform.forward * _input.magnitude) * Time.deltaTime *speed;
         rb.MovePosition(pos);
     }
 
-    void CalculateMovementVelocity()
-    {
-        
-    }
 }

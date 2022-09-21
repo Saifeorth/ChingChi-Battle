@@ -74,6 +74,11 @@ public class ChingchiAI : ChingChiCharacter
     private LayerMask enemyLayer;
 
 
+
+    private NavMeshPath currentPath;
+   // private NavMeshPath closestPath;
+
+
     private void Awake()
     {
         myAgent = GetComponent<NavMeshAgent>();
@@ -92,11 +97,117 @@ public class ChingchiAI : ChingChiCharacter
 
 
 
-    private Vector3 GetRandomPointFromArena()
+   
+
+
+  
+
+  
+
+
+
+
+
+  
+
+
+ 
+
+
+    private void ChooseTarget()
     {
-        Debug.Log("Got New Waypoint");
-        return new Vector3(Random.Range(-arenaWidth,arenaWidth),0,Random.Range(-arenaDepth,arenaDepth));
+        //Transform closestTarget = null;
+        float closestTargetDistance = float.MaxValue;
+        NavMeshPath path = null;
+        NavMeshPath shortestPath = null;
+
+        for (int i = 0; i < targetEnemies.Count; i++)
+        {
+            if (targetEnemies[i] == null)
+            {
+                continue;
+            }
+
+            path = new NavMeshPath();
+
+            if (NavMesh.CalculatePath(transform.position, targetEnemies[i].position, myAgent.areaMask, path))
+            {
+                float distance = Vector3.Distance(transform.position, path.corners[0]);
+
+                for (int j = 1; j < path.corners.Length; j++)
+                {
+                    distance += Vector3.Distance(path.corners[j - 1], path.corners[j]);
+                }
+
+                if (distance < closestTargetDistance)
+                {
+                    closestTargetDistance = distance;
+                    shortestPath = path;
+                }
+            }
+        }
+
+        if (shortestPath != null)
+        {
+            myAgent.SetPath(shortestPath);
+        }
     }
+
+    private void GetRandomPathFromArena()
+    {
+        NavMeshPath path = new NavMeshPath(); ;
+        NavMeshPath shortestPath = null;
+        float closestTargetDistance = float.MaxValue;
+
+        destination = new Vector3(Random.Range(-arenaWidth, arenaWidth), 0, Random.Range(-arenaDepth, arenaDepth));
+        if (NavMesh.CalculatePath(transform.position, destination, myAgent.areaMask, path))
+        {
+            float distance = Vector3.Distance(transform.position, path.corners[0]);
+
+            for (int j = 1; j < path.corners.Length; j++)
+            {
+                distance += Vector3.Distance(path.corners[j - 1], path.corners[j]);
+            }
+
+            if (distance < closestTargetDistance)
+            {
+                closestTargetDistance = distance;
+                shortestPath = path;
+            }
+        }
+        if (shortestPath != null)
+        {
+            myAgent.SetPath(shortestPath);
+        }
+    }
+
+
+    private void Search()
+    {
+        if (timeSinceEnemiesSearched >= enemiesSearchTimeLimit)
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+            foreach (var hitCollider in hitColliders)
+            {
+                ChingChiCharacter enemy = hitCollider.GetComponent<ChingChiCharacter>();
+                if (enemy != null && enemy != this)
+                {
+                    if (!targetEnemies.Contains(enemy.transform))
+                    {
+                        targetEnemies.Add(enemy.transform);
+                        //Debug.Log("Found Enemy");
+                    }
+                }
+            }
+            timeSinceEnemiesSearched = 0.0f;
+        }
+        timeSinceEnemiesSearched += Time.deltaTime;
+    }
+
+
+
+    //---------------------------------------------OLD MOVE----------------------------------------------//
+
 
     private void Move()
     {
@@ -110,11 +221,10 @@ public class ChingchiAI : ChingChiCharacter
         {
             Chase();
         }
-        else 
+        else
         {
             Wander();
         }
-
         timeSinceEnemiesSorted += Time.deltaTime;
     }
 
@@ -129,13 +239,32 @@ public class ChingchiAI : ChingChiCharacter
         {
             currentTarget = null;
         }
-        else 
+        else
         {
             Wander();
         }
-      
+
     }
 
+
+    private void Wander()
+    {
+        if (myAgent.speed != wanderSpeed)
+        {
+            myAgent.speed = wanderSpeed;
+        }
+
+        if (myAgent.destination == null || Vector3.Distance(transform.position, myAgent.destination) <= myAgent.stoppingDistance)
+        {
+            myAgent.SetDestination(GetRandomPointFromArena());
+        }
+    }
+
+    private Vector3 GetRandomPointFromArena()
+    {
+        //Debug.Log("Got New Waypoint");
+        return new Vector3(Random.Range(-arenaWidth, arenaWidth), 0, Random.Range(-arenaDepth, arenaDepth));
+    }
 
     Transform GetClosestEnemy(List<Transform> targets)
     {
@@ -162,12 +291,6 @@ public class ChingchiAI : ChingChiCharacter
                     }
                 }
             }
-
-
-
-
-
-
             //Sort Enemies
             if (allEnemies.Count > 0)
             {
@@ -200,45 +323,6 @@ public class ChingchiAI : ChingChiCharacter
         }
 
         return tMin;
-    }
-
-
-    
-
-
-    private void Wander()
-    {
-        if (myAgent.speed != wanderSpeed)
-        {
-            myAgent.speed = wanderSpeed;
-        }
-
-        if (myAgent.destination==null || Vector3.Distance(transform.position,myAgent.destination)<=myAgent.stoppingDistance)
-        {
-            myAgent.SetDestination(GetRandomPointFromArena());
-        }
-    }
-
-    private void Search()
-    {
-        if (timeSinceEnemiesSearched >= enemiesSearchTimeLimit)
-        {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
-            foreach (var hitCollider in hitColliders)
-            {
-                ChingChiCharacter enemy = hitCollider.GetComponent<ChingChiCharacter>();
-                if (enemy != null && enemy != this)
-                {
-                    if (!targetEnemies.Contains(enemy.transform))
-                    {
-                        targetEnemies.Add(enemy.transform);
-                        //Debug.Log("Found Enemy");
-                    }
-                }
-            }
-            timeSinceEnemiesSearched = 0.0f;
-        }
-        timeSinceEnemiesSearched += Time.deltaTime;
     }
 
     void OnDrawGizmosSelected()
