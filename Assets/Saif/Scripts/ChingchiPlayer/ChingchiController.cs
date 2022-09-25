@@ -43,6 +43,7 @@ public class ChingchiController : ChingChiCharacter
         }
 
         rb = GetComponent<Rigidbody>();
+        myAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         playerAudioSource = GetComponent<AudioSource>();
     }
 

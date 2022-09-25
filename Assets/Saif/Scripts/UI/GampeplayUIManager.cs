@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
+
+
+
 public class GampeplayUIManager : SimplePanel
 {
 
@@ -32,6 +36,9 @@ public class GampeplayUIManager : SimplePanel
 
     public static event Action OnGamePause;
     public static event Action OnGameResume;
+
+
+    public static event Action OnTimeEnded;
 
 
 
@@ -93,7 +100,27 @@ public class GampeplayUIManager : SimplePanel
             int seconds = Mathf.FloorToInt(gameTime - minutes * 60);
             string niceTime = string.Format("{0:00}:{1:00}", minutes, seconds);
             gameTimeText.text = niceTime;
+            CheckGameOver();
         }
+    }
+
+
+    private void CheckGameOver()
+    {
+        if (gameTime <= 0 && isGamePlaying)
+        {
+            OnTimeEnded?.Invoke();
+            CloseAndOpenPanel(GamePlayPanel, GameStatsPanel);
+        }
+    }
+
+
+
+
+
+    public void OnClickMain()
+    {
+        SceneManager.LoadScene(0);
     }
 
 

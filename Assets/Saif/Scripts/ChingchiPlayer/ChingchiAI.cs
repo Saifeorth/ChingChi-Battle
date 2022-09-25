@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class ChingchiAI : ChingChiCharacter
 {
 
-    private NavMeshAgent myAgent;
+   
 
     [Header("Wander")]
 

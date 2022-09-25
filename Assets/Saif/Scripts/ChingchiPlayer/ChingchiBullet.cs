@@ -57,11 +57,11 @@ public class ChingchiBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ChingchiDamage damager = other.gameObject.GetComponent<ChingchiDamage>();
-        if (damager!=null && damager.Owner != owner && damager.Owner.isActive)
+        ChingchiDamage damaged = other.gameObject.GetComponent<ChingchiDamage>();
+        if (damaged!=null && damaged.Owner != owner && damaged.Owner.isActive)
         {
-            damager.ApplyDamage(Damage);
-            Rigidbody rb =  damager.GetComponent<Rigidbody>();
+            damaged.ApplyDamage(Damage, owner);
+            Rigidbody rb =  damaged.GetComponent<Rigidbody>();
             Vector3 pushDirection = (rb.transform.position- transform.position);
             rb.AddForce(pushDirection * damageForce, ForceMode.Impulse);
             GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
@@ -74,7 +74,7 @@ public class ChingchiBullet : MonoBehaviour
             //gameObject.SetActive(false);
         }
 
-        if (damager ==null)
+        if (damaged ==null)
         {
             //GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
             //Destroy(hitImpactVfx, 5f);
@@ -85,7 +85,7 @@ public class ChingchiBullet : MonoBehaviour
         }
 
 
-         if (damager.Owner == owner)
+         if (damaged.Owner == owner)
         {
 
         }

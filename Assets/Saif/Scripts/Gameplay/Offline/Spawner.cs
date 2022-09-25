@@ -55,7 +55,7 @@ public class Spawner : MonoBehaviour
         ChingChiCharacter chingchiPlayer = Instantiate(player, playerSpawnPoint.position, Quaternion.identity);
         chingchiPlayer.scoreManager = globalScoreManager;
         chingchiPlayer.SetName(PlayerPrefs.GetString("USERNAME"));
-        globalScoreManager.AddStats(chingchiPlayer, chingchiPlayer.GetName());
+        globalScoreManager.AddStats(chingchiPlayer);
         chingchiPlayer.gameObject.SetActive(true);
         OnPlayeSpawned?.Invoke(chingchiPlayer);
     }
@@ -73,7 +73,7 @@ public class Spawner : MonoBehaviour
             chingchiEnemy.maxArenaDepth = MaxArenaDepth;
             chingchiEnemy.SetName(enemyNames[i]);
             chingchiEnemy.scoreManager = globalScoreManager;
-            globalScoreManager.AddStats(chingchiEnemy, chingchiEnemy.GetName());
+            globalScoreManager.AddStats(chingchiEnemy);
             chingchiEnemy.gameObject.SetActive(true);
         }
     }

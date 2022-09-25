@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         InGameAnnouncer.OnTimerAnnounced += StartGame;
         GampeplayUIManager.OnGamePause += OnGamePause;
+        GampeplayUIManager.OnTimeEnded += EndGame;
 
         //LevelManager.OnLevelLoad += OnLevelLoad;
         //ScoreManager.OnScoreChange += OnScoreChange;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     {
         InGameAnnouncer.OnTimerAnnounced -= StartGame;
         GampeplayUIManager.OnGamePause -= OnGamePause;
+        GampeplayUIManager.OnTimeEnded -= EndGame;
     }
 
 
@@ -52,6 +54,12 @@ public class GameManager : MonoBehaviour
         OnGamePlay?.Invoke(isGamePlaying);
     }
 
+
+    public void EndGame()
+    {
+        isGamePlaying = false;
+        OnGamePlay?.Invoke(isGamePlaying);
+    }
 
 
     private void OnGamePause()

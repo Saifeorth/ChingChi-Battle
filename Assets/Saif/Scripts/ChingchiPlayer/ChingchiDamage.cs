@@ -21,14 +21,8 @@ public class ChingchiDamage : MonoBehaviour
 
     public ChingChiCharacter Owner;
 
-    public event Action<float> OnDamageTaken;
-
+    public event Action<float, ChingChiCharacter> OnDamageTaken;
     private IEnumerator defaultIenumerator;
-
-
-
-
-
 
 
     // Start is called before the first frame update
@@ -52,9 +46,9 @@ public class ChingchiDamage : MonoBehaviour
 
 
 
-    public void ApplyDamage(float Damage)
+    public void ApplyDamage(float Damage, ChingChiCharacter damager)
     {
-        OnDamageTaken?.Invoke(Damage);
+        OnDamageTaken?.Invoke(Damage, damager);
         if (Owner.IsPlayable() && Owner.isActive)
         {
             CameraShaker.Instance.ShakeOnce(3f, 3f, 0.25f, 0.25f);
@@ -67,6 +61,9 @@ public class ChingchiDamage : MonoBehaviour
         defaultIenumerator = FlashDamage();
         StartCoroutine(defaultIenumerator);
     }
+
+
+
 
 
     private IEnumerator FlashDamage()

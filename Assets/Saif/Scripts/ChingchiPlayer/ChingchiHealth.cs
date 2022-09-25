@@ -47,17 +47,17 @@ public class ChingchiHealth : MonoBehaviour
     }
 
 
-    public void ModifyHealth(float amount)
+    public void ModifyHealth(float amount, ChingChiCharacter damager)
     {
         //Debug.Log("Health Modifid");
         currentHealth += amount;
         float currentHealthPct = currentHealth / maxHealth;
         OnHealthPctChanged?.Invoke(currentHealthPct);
-        CheckDeath();
+        CheckDeath(damager);
     }
 
 
-    private void CheckDeath()
+    private void CheckDeath(ChingChiCharacter damager)
     {
         if(currentHealth>0)
         {
@@ -65,6 +65,7 @@ public class ChingchiHealth : MonoBehaviour
         }
         else
         {
+            damager.Kills += 1;
             OnDeath();
         }
     }
@@ -73,6 +74,7 @@ public class ChingchiHealth : MonoBehaviour
     {
         //GameObject explosion =  Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         //Destroy(explosion, 3f);
+        Owner.Deaths += 1;
         Owner.Die();
     }
 }
