@@ -24,15 +24,19 @@ public class ChingchiHealth : MonoBehaviour
     [SerializeField]
     private GameObject explosionPrefab;
 
+    public ChingChiCharacter Owner;
+
 
     private void Awake()
     {       
         myDamageHandler = GetComponent<ChingchiDamage>();
+        Owner = GetComponent<ChingChiCharacter>();
         currentHealth = maxHealth;
     }
 
     private void OnEnable()
     {
+        currentHealth = maxHealth;
         myDamageHandler.OnDamageTaken += ModifyHealth;   
     }
 
@@ -67,9 +71,8 @@ public class ChingchiHealth : MonoBehaviour
 
     public void OnDeath()
     {
-        GameObject explosion =  Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        Destroy(explosion, 3f);
-        Destroy(this.gameObject);
-
+        //GameObject explosion =  Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        //Destroy(explosion, 3f);
+        Owner.Die();
     }
 }

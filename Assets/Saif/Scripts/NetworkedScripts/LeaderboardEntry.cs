@@ -15,6 +15,7 @@ public class LeaderboardEntry : MonoBehaviour
 
     public void OnValuesUpdate(string pos, string displayName, string mmr)
     {
+        Debug.Log("Function Called");
         positionText.text = pos;
         displayNameText.text = displayName;
         mmrText.text = mmr;

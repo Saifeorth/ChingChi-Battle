@@ -100,7 +100,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        PlayFabLogin.OnPlayfabLoginSuccess += ConnectToPhoton;
+       // PlayFabLogin.OnPlayfabLoginSuccess += ConnectToPhoton;
         PhotonNetwork.AutomaticallySyncScene = true;
         cachedRoomList = new Dictionary<string, RoomInfo>();
         roomListEntries = new Dictionary<string, GameObject>();
@@ -109,7 +109,7 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
 
     private void OnDestroy()
     {
-        PlayFabLogin.OnPlayfabLoginSuccess -= ConnectToPhoton;
+       // PlayFabLogin.OnPlayfabLoginSuccess -= ConnectToPhoton;
     }
 
 

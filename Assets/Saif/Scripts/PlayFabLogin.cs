@@ -4,15 +4,20 @@ using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using System;
+using System.Collections.Generic;
 
 public class PlayFabLogin : MonoBehaviour
 {
     [SerializeField] private string username;
+    [SerializeField] private int mmr = 50;
+    [SerializeField] private int defaultMMR = 50;
     [SerializeField] private TMP_InputField userNameField;
+    [SerializeField] private TextMeshProUGUI mmrText;
+    [SerializeField] private PlayFabLeaderBoard myLeaderBoard;
 
 
 
-    public static Action<string> OnPlayfabLoginSuccess;
+    //public static Action<string> OnPlayfabLoginSuccess;
 
     #region Unity Methods
 
@@ -29,6 +34,59 @@ public class PlayFabLogin : MonoBehaviour
         }
         
     }
+
+
+    public void GetMMr()
+    {
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnDataReceived, OnFailure);
+    }
+
+    private void OnDataReceived(GetUserDataResult result)
+    {
+        Debug.Log("Received User Data");
+        if (result.Data != null && result.Data.ContainsKey("MMR"))
+        {
+            mmr = int.Parse(result.Data["MMR"].Value);
+            mmrText.text = mmr.ToString();
+            myLeaderBoard.SendLeaderBoard(mmr);
+        }
+        else 
+        {
+            SaveMMR(defaultMMR);
+        }
+    }
+
+    public void SaveMMR(int ranking)
+    {
+        mmr = defaultMMR;
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                {"MMR", ranking.ToString()}
+            }
+        };
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnFailure);
+    }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SaveMMR(mmr + 50);
+        }
+#endif
+    }
+
+
+    private void OnDataSend(UpdateUserDataResult obj)
+    {
+        //mmr = 50;
+        mmrText.text = mmr.ToString();
+        myLeaderBoard.SendLeaderBoard(mmr);
+    }
+
 
     void Start()
     {
@@ -66,7 +124,9 @@ public class PlayFabLogin : MonoBehaviour
         Debug.Log($"Updating Playfab account's display name to {displayName}");
         var request = new UpdateUserTitleDisplayNameRequest { DisplayName = displayName };
         PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameSuccess, OnFailure);
-        OnPlayfabLoginSuccess?.Invoke(displayName);
+
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.LoginPanel, UIManager.instance.MainMenuPanel);
+        //OnPlayfabLoginSuccess?.Invoke(displayName);
     }
 
   
@@ -94,7 +154,7 @@ public class PlayFabLogin : MonoBehaviour
 
     public void OnClickBack()
     {
-        UIManager.instance.CloseAndOpenPanel(UIManager.instance.LoginPanel, UIManager.instance.MainMenuPanel);
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.MainMenuPanel, UIManager.instance.LoginPanel);
     }
 
     #endregion
@@ -108,6 +168,7 @@ public class PlayFabLogin : MonoBehaviour
     private void OnLoginCustomIdSuccess(LoginResult result)
     {
         Debug.Log($"You have logged into Playfab using custom id {username}");
+        GetMMr();
         UpdateDisplayName(username);
 
 

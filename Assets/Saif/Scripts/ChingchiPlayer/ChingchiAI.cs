@@ -55,7 +55,7 @@ public class ChingchiAI : ChingChiCharacter
     [SerializeField]
     private float chaseSpeed;
 
-
+    
 
 
     [Header("Search")]
@@ -82,17 +82,23 @@ public class ChingchiAI : ChingChiCharacter
 
     private void Awake()
     {
+        childRenderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < childRenderers.Length; i++)
+        {
+            childRenderers[i].gameObject.SetActive(false);
+        }
+
+        rb = GetComponent<Rigidbody>();
         myAgent = GetComponent<NavMeshAgent>();
         chaseSpeed = Random.Range(minChaseSpeed, maxChaseSpeed);
         wanderSpeed = Random.Range(minWanderSpeed, maxWanderSpeed);
-
-
     }
+
 
 
     private void Update()
     {
-        if (!isGamePlaying)
+        if (!isGamePlaying || !isActive)
         {
             return;
         }
@@ -103,6 +109,7 @@ public class ChingchiAI : ChingChiCharacter
     private void OnEnable()
     {
         GameManager.OnGamePlay += OnGamePlay;
+        base.Spawn();
     }
 
     private void OnDisable()

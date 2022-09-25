@@ -34,7 +34,11 @@ public class ChingchiHealthBar : MonoBehaviour
     private void Awake()
     {
         playerHealth = GetComponentInParent<ChingchiHealth>();
-        playerNameText.text = GetComponentInParent<ChingChiCharacter>().GetName();       
+        playerNameText.text = GetComponentInParent<ChingChiCharacter>().GetName();            
+    }
+
+    private void OnEnable()
+    {
         playerHealth.OnHealthPctChanged += HandleHealthChanged;
     }
 

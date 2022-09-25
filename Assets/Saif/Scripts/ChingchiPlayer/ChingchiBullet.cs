@@ -25,6 +25,10 @@ public class ChingchiBullet : MonoBehaviour
     [SerializeField]
     private GameObject hitImpactPrefab;
 
+
+    [SerializeField]
+    private AudioClip hitsoundFX;
+
     private void Awake()
     {
         Rb = GetComponent<Rigidbody>();
@@ -54,14 +58,15 @@ public class ChingchiBullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ChingchiDamage damager = other.gameObject.GetComponent<ChingchiDamage>();
-        if (damager!=null && damager.Owner != owner)
+        if (damager!=null && damager.Owner != owner && damager.Owner.isActive)
         {
             damager.ApplyDamage(Damage);
             Rigidbody rb =  damager.GetComponent<Rigidbody>();
             Vector3 pushDirection = (rb.transform.position- transform.position);
             rb.AddForce(pushDirection * damageForce, ForceMode.Impulse);
             GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
-            Destroy(hitImpactVfx, 5f);
+            Destroy(hitImpactVfx, 2f);
+            AudioSource.PlayClipAtPoint(hitsoundFX, transform.position);
             Rb.velocity = Vector3.zero;
             gameObject.SetActive(false);
             return;
@@ -71,8 +76,9 @@ public class ChingchiBullet : MonoBehaviour
 
         if (damager ==null)
         {
-            GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
-            Destroy(hitImpactVfx, 5f);
+            //GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
+            //Destroy(hitImpactVfx, 5f);
+            AudioSource.PlayClipAtPoint(hitsoundFX, transform.position);
             Rb.velocity = Vector3.zero;
             gameObject.SetActive(false);
             return;

@@ -85,7 +85,7 @@ public class UIManager : SimplePanel
     // Start is called before the first frame update
     void Start()
     {
-        CloseAndOpenPanel(null, MainMenuPanel);
+        CloseAndOpenPanel(null, LoginPanel);
     }
 
     //public void OnGameWin()
@@ -141,12 +141,20 @@ public class UIManager : SimplePanel
     
     public void OnClickSinglePlayer()
     {
-        CloseAndOpenPanel(SelectionPanel, null);
+        CloseAndOpenPanel(MainMenuPanel, null);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void OnClickMultiplayer()
     {
         CloseAndOpenPanel(MainMenuPanel, LoginPanel);
+    }
+
+
+
+    public void OnClickExit()
+    {
+        CloseAndOpenPanel(LoginPanel, null);
+        Application.Quit();
     }
 
 

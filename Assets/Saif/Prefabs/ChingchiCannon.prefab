@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Bits: 8
   currentTarget: {fileID: 0}
   turretTransform: {fileID: 1627961108462800227}
-  turretRotationSpeed: 2
+  turretRotationSpeed: 4
   myOwner: {fileID: 0}
   fireSFX: {fileID: 8300000, guid: bdaf41b3440e59d458f4a283101eef93, type: 3}
   enemiesSortTimeLimit: 0.5

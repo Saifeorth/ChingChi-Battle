@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
+using TMPro;
+
 
 public class PlayFabLeaderBoard : MonoBehaviour
 {
 
+    [SerializeField]
     private List<LeaderboardEntry> playerEntries;
     [SerializeField]
     private LeaderboardEntry LeaderBoardEntryPrefab;
+
+
     [SerializeField]
     private Transform LeaderBoardContent;
     private void Awake()
     {
         playerEntries = new List<LeaderboardEntry>();
-        SpawnLeaderBoardEntries();
+        //SpawnLeaderBoardEntries();
     }
 
 
@@ -48,13 +53,13 @@ public class PlayFabLeaderBoard : MonoBehaviour
     }
 
 
-    private void SpawnLeaderBoardEntries()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            LeaderboardEntry entry = Instantiate(LeaderBoardEntryPrefab, LeaderBoardContent);
-        }
-    }
+    //private void SpawnLeaderBoardEntries()
+    //{
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        LeaderboardEntry entry = Instantiate(LeaderBoardEntryPrefab, LeaderBoardContent);
+    //    }
+    //}
 
 
 
@@ -62,10 +67,10 @@ public class PlayFabLeaderBoard : MonoBehaviour
     {
 
         #if UNITY_EDITOR
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            SendLeaderBoard(50);
-        }
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    SendLeaderBoard(50);
+        //}
         #endif
     }
 
@@ -83,15 +88,40 @@ public class PlayFabLeaderBoard : MonoBehaviour
 
     public void GetBackToSelection()
     {
-        UIManager.instance.CloseAndOpenPanel(UIManager.instance.LeaderboardPanel, UIManager.instance.SelectionPanel);
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.LeaderboardPanel, UIManager.instance.MainMenuPanel);
+        RemoveEntries();
     }
 
     void OnLeaderBoardGet(GetLeaderboardResult result) {
 
-        UIManager.instance.CloseAndOpenPanel(UIManager.instance.SelectionPanel, UIManager.instance.LeaderboardPanel);
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.MainMenuPanel, UIManager.instance.LeaderboardPanel);
         foreach (var item in result.Leaderboard)
         {
+            LeaderboardEntry leaderBoardEntry = Instantiate(LeaderBoardEntryPrefab, LeaderBoardContent);
+            leaderBoardEntry.OnValuesUpdate(item.Position.ToString(), item.DisplayName, item.StatValue.ToString());
+            playerEntries.Add(leaderBoardEntry);
             Debug.Log(item.Position + " " + item.DisplayName + " " + item.StatValue);
         }
     }
+
+
+    private void RemoveEntries()
+    {
+        for (int i = LeaderBoardContent.childCount-1; i >=0 ; i--)
+        {
+            //Destroy(LeaderBoardContent.GetChild(i));
+            LeaderBoardContent.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
+
+    //[System.Serializable]
+    //public struct LeaderBoadData 
+    //{
+
+    //    public GameObject LeaderBoardEntryGameObject;
+    //    public TextMeshProUGUI LeaderBoardEntrySerialNumberText;
+    //    public TextMeshProUGUI LeaderBoardEntryPlayerNameText;
+    //    public TextMeshProUGUI LeaderBoardEntryPlayerMMRText;
+    //}
 }

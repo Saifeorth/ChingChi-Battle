@@ -55,7 +55,7 @@ public class ChingchiDamage : MonoBehaviour
     public void ApplyDamage(float Damage)
     {
         OnDamageTaken?.Invoke(Damage);
-        if (Owner.IsPlayable())
+        if (Owner.IsPlayable() && Owner.isActive)
         {
             CameraShaker.Instance.ShakeOnce(3f, 3f, 0.25f, 0.25f);
         }
@@ -104,15 +104,6 @@ public class ChingchiDamage : MonoBehaviour
         preChangecolors.Clear();
         defaultIenumerator = null;
         yield break;
-    }
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ApplyDamage(-10);
-        }
     }
 
 

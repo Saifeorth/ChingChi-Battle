@@ -10,9 +10,6 @@ public class ChingchiController : ChingChiCharacter
     [SerializeField]
     private float turnSpeed = 360;
 
-    [SerializeField]
-    private Rigidbody rb;
-
 
 
     private Vector3 _input;
@@ -39,65 +36,26 @@ public class ChingchiController : ChingChiCharacter
 
     private void Awake()
     {
-
-    }
-
-
-    public override void Spawn()
-    {
-        StartCoroutine(SpawnPlayer());
-    }
-
-
-    private IEnumerator SpawnPlayer()
-    {
-        for (int i = 0; i < renderers.Length; i++)
+        childRenderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < childRenderers.Length; i++)
         {
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].setActive(false);
-            }
-
-            yield return new WaitForSeconds(0.1f);
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].setActive(true);
-            }
-
-            yield return new WaitForSeconds(0.1f);
+            childRenderers[i].gameObject.SetActive(false);
         }
 
-        SetActivation(true);
-    }
-
-
-    public override void Die()
-    {
-        StartCoroutine(PlayerDeath());
-    }
-
-
-
-    private IEnumerator PlayerDeath()
-    {
-        SetActivation(false);
-        yield return new WaitForSeconds(0.1f);
-    }
-
-
-
-
-    private void Start()
-    {
         rb = GetComponent<Rigidbody>();
         playerAudioSource = GetComponent<AudioSource>();
     }
 
+
+
+
     private void OnEnable()
     {
         GameManager.OnGamePlay += OnGamePlay;
-        Spawn();
+        base.Spawn();
     }
+
+
 
     private void OnDisable()
     {
@@ -113,6 +71,7 @@ public class ChingchiController : ChingChiCharacter
     // Update is called once per frame
     void Update()
     {
+      
         if(!isGamePlaying || !isActive)
         {
             return;
