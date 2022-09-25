@@ -54,6 +54,7 @@ MonoBehaviour:
   turretTransform: {fileID: 1627961108462800227}
   turretRotationSpeed: 2
   myOwner: {fileID: 0}
+  fireSFX: {fileID: 8300000, guid: bdaf41b3440e59d458f4a283101eef93, type: 3}
   enemiesSortTimeLimit: 0.5
   timeSinceEnemiesSorted: 0
   detectionRange: 15

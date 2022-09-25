@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
@@ -89,6 +90,11 @@ public class PlayFabLogin : MonoBehaviour
         if (!IsValidUsername()) return;
 
         LoginWithCustomId();
+    }
+
+    public void OnClickBack()
+    {
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.LoginPanel, UIManager.instance.MainMenuPanel);
     }
 
     #endregion

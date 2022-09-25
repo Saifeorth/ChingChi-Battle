@@ -144,6 +144,12 @@ public class PhotonMatchmaking : MonoBehaviourPunCallbacks
         ClearRoomListView();
     }
 
+
+    public void OnClickBackFromOnline()
+    {
+        UIManager.instance.CloseAndOpenPanel(UIManager.instance.SelectionPanel, UIManager.instance.MainMenuPanel);
+    }
+
     //public override void OnCreatedRoom()
     //{
     //    UIManager.instance.CloseAndOpenPanel(UIManager.instance.CreateRoomPanel, null);

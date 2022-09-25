@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : SimplePanel
 
@@ -137,53 +138,12 @@ public class UIManager : SimplePanel
     {
         currentScore += score;
     }
-
-
-
-    //IEnumerator UpdateLevelAndAddScore(bool gameWin)
-    //{
-    //    float currentTime = 0.0f;
-    //    ;
-
-    //    float targetScore = totalScore + currentScore;
-
-
-    //    if (gameWin)
-    //    {
-    //        levelIndex += 1;
-    //    }
-
-
-    //    levelText.text = "Level " + levelIndex.ToString();
-    //    levelTextGameplay.text = "Level " + levelIndex.ToString();
-
-    //    while (currentTime < updateDelay)
-    //    {
-    //        currentTime += Time.deltaTime;
-    //        CurrencyTextGameplay.text = Mathf.RoundToInt(Mathf.Lerp(totalScore, targetScore, currentTime / updateDelay)).ToString();
-    //        CurrencyTextMainMenu.text = Mathf.RoundToInt(Mathf.Lerp(totalScore, targetScore, currentTime / updateDelay)).ToString();
-    //        yield return null;
-    //    }
-
-
-    //    CurrencyTextGameplay.text = targetScore.ToString();
-    //    CurrencyTextMainMenu.text = targetScore.ToString();
-
-
-    //    if (gameWin)
-    //    {
-    //        CloseAndOpenPanel(GamePlayPanel, GameWinPanel);
-    //    }
-    //    else 
-    //    {
-    //        CloseAndOpenPanel(GamePlayPanel, GameLosePanel);
-    //    }
-
-
-    //}
-
-
-
+    
+    public void OnClickSinglePlayer()
+    {
+        CloseAndOpenPanel(SelectionPanel, null);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
     public void OnClickMultiplayer()
     {
         CloseAndOpenPanel(MainMenuPanel, LoginPanel);

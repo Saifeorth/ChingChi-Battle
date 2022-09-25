@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Saif/Scenes/PhotonScene.unity
+    path: Assets/Saif/Scenes/MainMenu.unity
     guid: 5c85fcc9136d612419eccac3004ee46c
+  - enabled: 1
+    path: Assets/Saif/Scenes/OfflineGameplay.unity
+    guid: e1e455916efffe548b7224ca4c364d66
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 60b3ac27f4c64d84eb2fdb65909a27a3,
       type: 2}

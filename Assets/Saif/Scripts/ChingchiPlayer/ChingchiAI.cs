@@ -10,12 +10,11 @@ public class ChingchiAI : ChingChiCharacter
 
     [Header("Wander")]
 
-    [SerializeField]
-    private float arenaWidth;
 
-
-    [SerializeField]
-    private float arenaDepth;
+    public float minArenaWidth;
+    public float maxArenaWidth;
+    public float minArenaDepth;
+    public float maxArenaDepth;
 
 
     [SerializeField]
@@ -76,7 +75,9 @@ public class ChingchiAI : ChingChiCharacter
 
 
     private NavMeshPath currentPath;
-   // private NavMeshPath closestPath;
+    // private NavMeshPath closestPath;
+
+   
 
 
     private void Awake()
@@ -91,27 +92,47 @@ public class ChingchiAI : ChingChiCharacter
 
     private void Update()
     {
+        if (!isGamePlaying)
+        {
+            return;
+        }
         Search();
         Move();
     }
 
+    private void OnEnable()
+    {
+        GameManager.OnGamePlay += OnGamePlay;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGamePlay -= OnGamePlay;
+    }
 
 
-   
-
-
-  
-
-  
-
+    private void OnGamePlay(bool gamePlayingState)
+    {
+        isGamePlaying = gamePlayingState;
+    }
 
 
 
 
-  
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private void ChooseTarget()
@@ -159,7 +180,7 @@ public class ChingchiAI : ChingChiCharacter
         NavMeshPath shortestPath = null;
         float closestTargetDistance = float.MaxValue;
 
-        destination = new Vector3(Random.Range(-arenaWidth, arenaWidth), 0, Random.Range(-arenaDepth, arenaDepth));
+        destination = new Vector3(Random.Range(minArenaWidth, maxArenaWidth), 0, Random.Range(minArenaDepth, maxArenaDepth));
         if (NavMesh.CalculatePath(transform.position, destination, myAgent.areaMask, path))
         {
             float distance = Vector3.Distance(transform.position, path.corners[0]);
@@ -263,7 +284,7 @@ public class ChingchiAI : ChingChiCharacter
     private Vector3 GetRandomPointFromArena()
     {
         //Debug.Log("Got New Waypoint");
-        return new Vector3(Random.Range(-arenaWidth, arenaWidth), 0, Random.Range(-arenaDepth, arenaDepth));
+        return new Vector3(Random.Range(minArenaWidth, maxArenaWidth), 0, Random.Range(minArenaDepth, maxArenaDepth));
     }
 
     Transform GetClosestEnemy(List<Transform> targets)

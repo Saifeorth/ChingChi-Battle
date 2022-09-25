@@ -24,6 +24,13 @@ public class ChingchiMachineGun : MonoBehaviour
     private ChingChiCharacter myOwner;
 
 
+    [SerializeField]
+    private AudioClip fireSFX;
+
+
+
+
+
 
 
     [Header("Sort")]
@@ -161,6 +168,12 @@ public class ChingchiMachineGun : MonoBehaviour
 
     private void Update()
     {
+        if (!myOwner.isGamePlaying)
+        {
+            return;
+        }
+
+
         Search();
         LookAtTarget();
         AutoFire();
@@ -174,7 +187,8 @@ public class ChingchiMachineGun : MonoBehaviour
         if (currentTarget != null && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;         
+            Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;
+            AudioSource.PlayClipAtPoint(fireSFX, bulletSpawnPoint.position);
             Vector3 shootDir = (currentTarget.position - bulletTransform.position).normalized;
             bulletTransform.GetComponent<ChingchiBullet>().Setup(shootDir, myOwner);
         }
