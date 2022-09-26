@@ -61935,7 +61935,7 @@ MonoBehaviour:
   GameStatsPanel: {fileID: 2025610951}
   gameTimeText: {fileID: 503940330}
   isGamePlaying: 0
-  gameTime: 120
+  gameTime: 30
 --- !u!1001 &2079017093
 PrefabInstance:
   m_ObjectHideFlags: 0
