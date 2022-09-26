@@ -12,10 +12,7 @@ public class GameManager : MonoBehaviour
     public int currentScore;
     public int RequiredScore;
 
-
-
     public static event Action<bool> OnGamePlay;
-
 
 
     public bool isGamePlaying = false;
@@ -32,7 +29,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         InGameAnnouncer.OnTimerAnnounced += StartGame;
-        GampeplayUIManager.OnGamePause += OnGamePause;
+        //GampeplayUIManager.OnGamePause += OnGamePause;
         GampeplayUIManager.OnTimeEnded += EndGame;
 
         //LevelManager.OnLevelLoad += OnLevelLoad;
@@ -43,7 +40,7 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         InGameAnnouncer.OnTimerAnnounced -= StartGame;
-        GampeplayUIManager.OnGamePause -= OnGamePause;
+        //GampeplayUIManager.OnGamePause -= OnGamePause;
         GampeplayUIManager.OnTimeEnded -= EndGame;
     }
 
@@ -62,17 +59,17 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void OnGamePause()
-    {
-        isGamePlaying = false;
-        OnGamePlay?.Invoke(isGamePlaying);
-    }
+    //private void OnGamePause()
+    //{
+    //    isGamePlaying = false;
+    //    OnGamePlay?.Invoke(isGamePlaying);
+    //}
 
-    private void OnGameResume()
-    {
-        isGamePlaying = true;
-        OnGamePlay?.Invoke(isGamePlaying);
-    }
+    //private void OnGameResume()
+    //{
+    //    isGamePlaying = true;
+    //    OnGamePlay?.Invoke(isGamePlaying);
+    //}
 
 
 

@@ -40,7 +40,16 @@ public class ChingchiHealthBar : MonoBehaviour
     private void OnEnable()
     {
         playerHealth.OnHealthPctChanged += HandleHealthChanged;
+        HandleHealthChanged(1);
     }
+
+    private void OnDisable()
+    {
+        playerHealth.OnHealthPctChanged -= HandleHealthChanged;
+    }
+
+
+
 
     private void HandleHealthChanged(float pct)
     {
@@ -54,10 +63,7 @@ public class ChingchiHealthBar : MonoBehaviour
     }
 
 
-    private void OnDisable()
-    {
-        playerHealth.OnHealthPctChanged -= HandleHealthChanged;
-    }
+ 
 
 
     private IEnumerator ChangeToPct(float pct)

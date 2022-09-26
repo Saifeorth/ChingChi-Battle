@@ -53,6 +53,7 @@ public class ChingchiController : ChingChiCharacter
     private void OnEnable()
     {
         GameManager.OnGamePlay += OnGamePlay;
+
         base.Spawn();
     }
 
@@ -64,10 +65,48 @@ public class ChingchiController : ChingChiCharacter
     }
 
 
+    private void Stop()
+    {
+        if (isGamePlaying)
+        {
+            isGamePlaying = false;
+            myAgent.isStopped = true;
+            rb.isKinematic = true;
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+
+    private void Resume()
+    {
+        if (!isGamePlaying)
+        {
+            isGamePlaying = true;
+            myAgent.isStopped = false;
+            rb.isKinematic = false;
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+
     private void OnGamePlay(bool gamePlayingState)
     {
-        isGamePlaying = gamePlayingState;
+        if (isActive)
+        {
+            isGamePlaying = gamePlayingState;
+            if (isGamePlaying)
+            {
+                Resume();
+            }
+            else
+            {
+                Stop();
+            }
+        }
+        
     }
+
+  
 
     // Update is called once per frame
     void Update()
@@ -88,8 +127,16 @@ public class ChingchiController : ChingChiCharacter
     private void FixedUpdate()
     {
         //rb.velocity = chingchiVelocity * speed;
+        if (!isGamePlaying || !isActive)
+        {
+            rb.velocity = Vector3.zero;
+        }
+        else 
+        {
+            Move();
+        }
 
-        Move();
+        
     }
 
 
@@ -170,6 +217,7 @@ public class ChingchiController : ChingChiCharacter
         }
     }
 
+
     private void StopMovementVfx()
     {
         for (int i = 0; i < movementVFx.Length; i++)
@@ -180,5 +228,15 @@ public class ChingchiController : ChingChiCharacter
             }
         }
     }
+
+
+
+
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    AudioSource.PlayClipAtPoint(hitSfx, collision.GetContact(0).point);
+    //}
 
 }

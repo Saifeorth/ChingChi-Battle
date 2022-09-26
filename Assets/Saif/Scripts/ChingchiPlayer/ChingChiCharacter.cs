@@ -32,7 +32,9 @@ using UnityEngine;
         public float deathTime = 5.0f;
         public GameObject deathExplosionVfx;
         public AudioClip explosionSFx;
+        public AudioClip hitSfx;
         public ScoreManager scoreManager;
+        public Spawner mySpawner;
 
 
         public string GetName()
@@ -103,7 +105,7 @@ using UnityEngine;
         }
 
 
-
+        
 
         public void Die()
         {
@@ -134,6 +136,14 @@ using UnityEngine;
             yield return new WaitForSeconds(deathTime);
 
             deathVfx.SetActive(false);
+
+            if(isGamePlaying)
+            {
+                mySpawner.RespawnGameObject(this);
+            }
+
+
+
             gameObject.SetActive(false);
         }
 

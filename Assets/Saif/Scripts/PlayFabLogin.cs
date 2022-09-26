@@ -48,6 +48,7 @@ public class PlayFabLogin : MonoBehaviour
         {
             mmr = int.Parse(result.Data["MMR"].Value);
             mmrText.text = mmr.ToString();
+            PlayerPrefs.SetInt("MMR", mmr);
             myLeaderBoard.SendLeaderBoard(mmr);
         }
         else 
@@ -84,6 +85,7 @@ public class PlayFabLogin : MonoBehaviour
     {
         //mmr = 50;
         mmrText.text = mmr.ToString();
+        PlayerPrefs.SetInt("MMR", mmr);
         myLeaderBoard.SendLeaderBoard(mmr);
     }
 

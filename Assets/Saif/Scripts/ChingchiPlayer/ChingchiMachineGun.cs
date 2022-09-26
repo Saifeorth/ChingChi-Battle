@@ -117,7 +117,7 @@ public class ChingchiMachineGun : MonoBehaviour
                 if (t != null)
                 {
                     float dist = Vector3.Distance(t.position, currentPos);
-                    if (dist > detectionRange)
+                    if (dist > detectionRange || !t.GetComponent<ChingchiMachineGun>().myOwner.isActive)
                     {
                         farEnemies.Add(t);
                         //Debug.Log("Enemy Removed From List");
@@ -184,7 +184,7 @@ public class ChingchiMachineGun : MonoBehaviour
 
     private void AutoFire()
     {
-        if (currentTarget != null && Time.time > nextFire)
+        if (currentTarget != null && Time.time > nextFire && myOwner.isActive)
         {
             nextFire = Time.time + fireRate;
             Transform bulletTransform = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity).transform;

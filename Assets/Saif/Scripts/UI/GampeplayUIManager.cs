@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 public class GampeplayUIManager : SimplePanel
 {
 
-    [SerializeField]
-    private GameObject FadeInOutPanel;
 
     [SerializeField]
     private GameObject GamePlayPanel;
@@ -52,6 +50,9 @@ public class GampeplayUIManager : SimplePanel
 
 
 
+
+
+
     private void OnEnable()
     {
         Spawner.OnPlayeSpawned += OnPlayerSpawned;
@@ -67,7 +68,7 @@ public class GampeplayUIManager : SimplePanel
 
     private void OnPlayerSpawned(ChingChiCharacter player)
     {
-        CloseAndOpenPanel(null, FadeInOutPanel);
+        CloseAndOpenPanel(null, GamePlayPanel);
     }
 
 

@@ -118,9 +118,45 @@ public class ChingchiAI : ChingChiCharacter
     }
 
 
+    private void Stop()
+    {
+        if (isGamePlaying)
+        {
+            isGamePlaying = false;
+            myAgent.isStopped = true;
+            rb.isKinematic = true;
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+
+    private void Resume()
+    {
+        if (!isGamePlaying)
+        {
+            isGamePlaying = true;
+            myAgent.isStopped = false;
+            rb.isKinematic = false;
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+
     private void OnGamePlay(bool gamePlayingState)
     {
-        isGamePlaying = gamePlayingState;
+        if (isActive)
+        {
+            isGamePlaying = gamePlayingState;
+            if (isGamePlaying)
+            {
+                Resume();
+            }
+            else
+            {
+                Stop();
+            }
+        }
+
     }
 
 

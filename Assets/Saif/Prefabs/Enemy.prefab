@@ -9739,7 +9739,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956499668619854354}
-  m_Material: {fileID: 13400000, guid: 0ab5737af9a056d438253ec4f6f69bdf, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -9899,7 +9899,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956499668619854354}
-  m_Material: {fileID: 13400000, guid: 0ab5737af9a056d438253ec4f6f69bdf, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -9922,6 +9922,7 @@ MonoBehaviour:
   isGamePlaying: 0
   isActive: 0
   rb: {fileID: 0}
+  myAgent: {fileID: 0}
   Kills: 0
   Deaths: 0
   childRenderers: []

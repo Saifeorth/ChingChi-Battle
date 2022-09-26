@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.Linq;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class ScoreManager : MonoBehaviour
 
 
     private List<Stats> endStats = new List<Stats>();
+
+    [SerializeField]
+    private int mmr = 0;
 
 
     [SerializeField]
@@ -21,6 +26,9 @@ public class ScoreManager : MonoBehaviour
     private TextMeshProUGUI[] killsTexts;
     [SerializeField]
     private TextMeshProUGUI[] deathsTexts;
+
+
+    public GameObject mainButton;
 
 
 
@@ -40,6 +48,8 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         allCharacters = new List<ChingChiCharacter>();
+        mmr = PlayerPrefs.GetInt("MMR");
+        mainButton.SetActive(false);
         gameStats = new List<Stats>();
     }
 
@@ -47,11 +57,10 @@ public class ScoreManager : MonoBehaviour
     [System.Serializable]
     public struct Stats 
     {
+        public ChingChiCharacter character;
         public string characterName;
         public int kills;
-        public int deaths;
-      
-      
+        public int deaths;    
     }
 
 
@@ -72,6 +81,7 @@ public class ScoreManager : MonoBehaviour
             stat.characterName = allCharacters[i].GetName();
             stat.kills = allCharacters[i].Kills;
             stat.deaths = allCharacters[i].Deaths;
+            stat.character = allCharacters[i];
             gameStats.Add(stat);
         }
 
@@ -90,13 +100,84 @@ public class ScoreManager : MonoBehaviour
             killsTexts[i].text = endStats[i].kills.ToString();
             deathsTexts[i].text = endStats[i].deaths.ToString();
         }
+
+        AssignRanking();
     }
 
 
     public void AssignRanking()
     {
+        if (endStats[0].character.IsPlayable())
+        {
+            mmr += 30;
+        }
 
+        if (endStats[1].character.IsPlayable())
+        {
+            mmr += 15;
+        }
+
+        if (endStats[1].character.IsPlayable())
+        {
+            mmr += 5;
+        }
+
+
+        SaveMMR(mmr);
     }
+
+    public void SaveMMR(int ranking)
+    {
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                {"MMR", ranking.ToString()}
+            }
+        };
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnFailure);
+    }
+
+
+    private void OnDataSend(UpdateUserDataResult obj)
+    {
+        //mmr = 50;
+        //mmrText.text = mmr.ToString();
+        //myLeaderBoard.SendLeaderBoard(mmr);
+        PlayerPrefs.SetInt("MMR", mmr);
+        SendLeaderBoard(mmr);
+    }
+
+
+    public void SendLeaderBoard(int MMR)
+    {
+        var request = new UpdatePlayerStatisticsRequest
+        {
+            Statistics = new List<StatisticUpdate>
+            {
+                new StatisticUpdate
+                {
+                    StatisticName = "MMR",
+                    Value = MMR
+                }
+            }
+        };
+        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderBoardUpdate, OnFailure);
+    }
+
+    void OnLeaderBoardUpdate(UpdatePlayerStatisticsResult result)
+    {
+        Debug.Log("Successful LeaderBoard Sent");
+        mainButton.SetActive(true);
+    }
+
+
+    private void OnFailure(PlayFabError error)
+    {
+        Debug.Log($"There was an issue with your request {error.GenerateErrorReport()}");
+    }
+
+
 
 
 
