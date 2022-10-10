@@ -62,7 +62,7 @@
         frameworkUrl: buildUrl + "/Webgl.framework.js.gz",
         codeUrl: buildUrl + "/Webgl.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
+        companyName: "GiveUsFive",
         productName: "ChingchiArena",
         productVersion: "0.1.0",
         showBanner: unityShowBanner,
@@ -97,6 +97,7 @@
         canvas.style.height = "600px";
       }
 
+      canvas.style.background = "url('" + buildUrl + "/Webgl.jpg.gz') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
