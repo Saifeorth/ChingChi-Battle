@@ -48,7 +48,7 @@ public class ChingchiBullet : MonoBehaviour
         owner = myOwner;
         if (owner.IsPlayable())
         {
-            CameraShaker.Instance.ShakeOnce(1f, 1f, 0.15f, 0.15f);
+            CameraShaker.Instance.ShakeOnce(2f, 2f, 0.15f, 0.15f);
         }
         Rb.AddForce(shootDir * moveSpeed, ForceMode.Impulse);
     }
