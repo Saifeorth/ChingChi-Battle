@@ -36,7 +36,7 @@ public class WallCollision : MonoBehaviour
         if (rb != null)
         {
             Debug.Log("Player Pushed Back");
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
     }
 

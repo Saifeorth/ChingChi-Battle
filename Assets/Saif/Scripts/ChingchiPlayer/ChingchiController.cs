@@ -72,7 +72,7 @@ public class ChingchiController : ChingChiCharacter
             isGamePlaying = false;
             myAgent.isStopped = true;
             rb.isKinematic = true;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -84,7 +84,7 @@ public class ChingchiController : ChingChiCharacter
             isGamePlaying = true;
             myAgent.isStopped = false;
             rb.isKinematic = false;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -129,7 +129,7 @@ public class ChingchiController : ChingChiCharacter
         //rb.velocity = chingchiVelocity * speed;
         if (!isGamePlaying || !isActive)
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
         else 
         {

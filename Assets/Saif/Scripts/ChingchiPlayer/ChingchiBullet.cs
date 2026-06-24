@@ -67,7 +67,7 @@ public class ChingchiBullet : MonoBehaviour
             GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
             Destroy(hitImpactVfx, 2f);
             AudioSource.PlayClipAtPoint(hitsoundFX, transform.position);
-            Rb.velocity = Vector3.zero;
+            Rb.linearVelocity = Vector3.zero;
             gameObject.SetActive(false);
             return;
             //Vector3 tempContactPoint = pushDirection + transform.position;        
@@ -79,7 +79,7 @@ public class ChingchiBullet : MonoBehaviour
             //GameObject hitImpactVfx = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity);
             //Destroy(hitImpactVfx, 5f);
             AudioSource.PlayClipAtPoint(hitsoundFX, transform.position);
-            Rb.velocity = Vector3.zero;
+            Rb.linearVelocity = Vector3.zero;
             gameObject.SetActive(false);
             return;
         }

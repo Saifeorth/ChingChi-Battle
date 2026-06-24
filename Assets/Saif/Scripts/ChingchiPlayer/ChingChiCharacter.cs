@@ -119,7 +119,7 @@ using UnityEngine;
             SetActivation(false);
             DisableColliders();
             myAgent.isStopped = true;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.isKinematic = true;
             deathVfx.SetActive(true);
             AudioSource.PlayClipAtPoint(explosionSFx, transform.position);

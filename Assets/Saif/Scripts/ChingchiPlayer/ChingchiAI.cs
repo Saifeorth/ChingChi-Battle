@@ -125,7 +125,7 @@ public class ChingchiAI : ChingChiCharacter
             isGamePlaying = false;
             myAgent.isStopped = true;
             rb.isKinematic = true;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -137,7 +137,7 @@ public class ChingchiAI : ChingChiCharacter
             isGamePlaying = true;
             myAgent.isStopped = false;
             rb.isKinematic = false;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
     }
 
