@@ -9,3 +9,4 @@ EditorBuildSettings:
     path: Assets/Saif/Scenes/PhotonScene.unity
     guid: 5c85fcc9136d612419eccac3004ee46c
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
